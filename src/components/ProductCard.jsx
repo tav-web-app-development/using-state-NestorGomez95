@@ -1,25 +1,37 @@
+import { useState } from "react";
 export default function ProductCard({ product }) {
-  let currentImageIndex = 0;
-  let itemsInCart = 0;
+  
+  
+  const [countimg, setCountImg] = useState (0);
+  const [showDescription, setShowDescription] = useState (false);
+  const [productCount, setProductCount] = useState (0);
 
   const handleAddToCartClick = () => {
-    itemsInCart++;
-    alert(`you added ${itemsInCart}`);
+    setProductCount(productCount + 1);
+    alert(`you added ${productCount + 1} to your cart`);
+  };
+  
+  const toggleDescription = () => {
+    setShowDescription (!showDescription);
+  
+
   };
   return (
     <>
       <div id="image-carousel">
         <img
-          src={product.imageUrls[currentImageIndex] + " " + product.name}
+          src={product.imageUrls[countimg] + " " + product.name}
           alt={product.name}
         />
-        <button>Next</button>
-        <button>Previous</button>
+        <button onClick={() => setCountImg (countimg + 1)} disabled = {countimg >= product.imageUrls.length -1}>Next</button>
+        <button onClick={() => setCountImg (countimg - 1 )} disabled = {countimg <= 0}>Previous</button>
       </div>
 
       <h3>{product.name}</h3>
       <p>{product.description}</p>
-      <button>Show Description</button>
+      <button onClick={toggleDescription}>
+        {showDescription ? "Hide Description" : "Show Description"}
+      </button>
       <div className="price">${product.price}</div>
 
       <button onClick={handleAddToCartClick}>Add to Cart</button>
